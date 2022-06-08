@@ -1,0 +1,58 @@
+.education {
+    &__row {
+        display: flex;
+        justify-content: space-between;
+
+        .vs-select-content {
+            width: 32%;
+        }
+    }
+
+    &__group {
+        margin-top: 10px;
+    }
+
+    .vs-select-content {
+        max-width: 100%;
+    }
+    &__buttons {
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
+        align-items: center;
+
+        .vs-button {
+            margin-left: 0;
+        }
+    }
+
+    &__btn {
+        width: max-content;
+        border: none;
+        background: transparent;
+        margin-top: 10px;
+        opacity: 0.4;
+    }
+
+    &__text {
+        font-size: 12px;
+        margin-bottom: 5px;
+        color: #23313f;
+    }
+
+    &__subtitle {
+        font-size: 11px;
+    }
+
+    &__textarea {
+        width: 100%;
+        background: rgba(var(--vs-gray-2),1);
+        border: none;
+        border-radius: 5px;
+        padding: 7px 13px 7px 10px;
+        resize: none;
+        outline: none;
+        font-family: inherit;
+        margin-top: 15px;
+    }
+}
