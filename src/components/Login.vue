@@ -59,7 +59,7 @@ export default {
 </script>
 <style lang="scss" scoped>
     .login {
-        min-height: calc(100vh - 110.5px);
+        min-height: calc(100vh - 174px);
         display: flex;
         flex-direction: column;
         justify-content: center;

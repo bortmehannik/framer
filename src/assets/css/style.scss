@@ -56,3 +56,28 @@
         margin-top: 15px;
     }
 }
+
+.vs-card {
+    &__img {
+        min-height: 250px;
+    }
+}
+
+.vs-card__title h3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    box-orient: vertical;
+}
+
+.vs-card__text {
+    min-height: 236px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

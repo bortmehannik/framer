@@ -10,6 +10,7 @@ export default new Vuex.Store({
     user: null,
     firebase: null,
     vacancies: [],
+    isLoading: false,
   },
   mutations: {
     FIREBASE_INIT(state, payload) {
@@ -25,10 +26,14 @@ export default new Vuex.Store({
     },
     UPDATE_USER(state, payload) {
       state.user[Object.keys(payload)[0]] = payload[Object.keys(payload)[0]];
+    },
+    SET_LOADING(state, payload) {
+      state.isLoading = payload;
     }
   },
   actions: {
     getVacanciesFromDB({commit}) {
+      commit('SET_LOADING', true);
       const dbRef = ref(getDatabase());
         get(child(dbRef, 'vacancies')).then((snapshot) => {
           if (snapshot.exists()) {
@@ -38,11 +43,13 @@ export default new Vuex.Store({
             keys.forEach(key => {
               commit('SET_VACANCIES', data[key])
             });
-
+            commit('SET_LOADING', false);
           } else {
+            commit('SET_LOADING', false);
             console.log("No data available");
           }
         }).catch((error) => {
+          commit('SET_LOADING', false);
           console.error(error);
         });
     },
@@ -100,8 +107,10 @@ export default new Vuex.Store({
   },
   getters: {
     getFirebaseApp: (state) => state.firebase,
-    allVacancies: (state) => state.vacancies,
-    getUser: (state) => state.user
+    getUser: (state) => state.user,
+    allVacancies(state) {
+      return state.vacancies.sort(() => Math.random() - 0.5);
+    },
   },
   modules: {}
 })

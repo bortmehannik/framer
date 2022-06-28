@@ -14,6 +14,12 @@
             </vs-select>
         </div>
         <div class="education__group">
+            <vs-input v-model="city" placeholder="Город" />
+        </div>
+        <div class="education__group">
+            <vs-input v-model="department" placeholder="Отдел" />
+        </div>
+        <div class="education__group">
             <vs-select placeholder="Форма занятости" v-model="selectedEmployment">
                 <vs-option
                     v-for="(employment, i) in employments"
@@ -45,6 +51,8 @@ export default {
     data: () => ({
         selectedActivity: '',
         selectedEmployment: '',
+        city: '',
+        department: '',
         activities: ['IT', 'Консалтинг', 'Бухгалтерия', 'Другой'],
         employments: ['Полный день', 'Удаленная работа', 'По-совместительству']
     }),
@@ -53,12 +61,16 @@ export default {
         ...mapActions(['updateUserInfo']),
         addToCV() {
 
-            if (this.selectedActivity && this.selectedEmployment) {
+            if (this.selectedActivity && this.selectedEmployment && this.city && this.department) {
                 const activity = this.activities[this.selectedActivity - 1];
                 const employment = this.employments[this.selectedEmployment - 1];
+                const city = this.city;
+                const department = this.department;
 
                 const activities = {
                     activity,
+                    city,
+                    department,
                     employment
                 }
 

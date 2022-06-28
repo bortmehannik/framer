@@ -5,6 +5,10 @@ import store from './store';
 import router from './router';
 import Vuesax from 'vuesax';
 
+import Vue2TouchEvents from 'vue2-touch-events';
+
+import { VueHammer } from 'vue2-hammer'
+
 import { initializeApp } from "firebase/app";
 // import { getDatabase } from "firebase/database";
 
@@ -15,6 +19,8 @@ import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css';
 Vue.config.productionTip = false
 
 Vue.use(Vuesax);
+Vue.use(Vue2TouchEvents);
+Vue.use(VueHammer);
 
 new Vue({
   router,

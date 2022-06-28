@@ -1,5 +1,21 @@
 <template>
   <div id="app">
+    <div class="head">
+      <div class="head__logo">
+        <router-link to="/">
+          <img src="https://changellenge.com/local/templates/main/assets/wl/img/logo-ico.svg" alt="CL">
+        </router-link>
+      </div>
+      <div class="head__auth">
+        <router-link to="/auth" v-if="!getUser">
+          Войти
+          <img src="https://changellenge.com/local/templates/main/assets/wl/img/ico-enter.svg" alt="">
+        </router-link>
+        <button @click="logout" v-else>
+          Выйти
+        </button>
+      </div>
+    </div>
     <router-view/>
     <div id="nav">
       <router-link to="/">
@@ -23,7 +39,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
   mounted() {
@@ -35,11 +51,20 @@ export default {
   },
   methods: {
     ...mapActions(['getUserById']),
+    ...mapMutations(['SET_USER']),
     getCookie(name) {
       var value = "; " + document.cookie;
       var parts = value.split("; " + name + "=");
       if (parts.length == 2) return parts.pop().split(";").shift();
+    },
+    logout() {
+      this.SET_USER(null);
+
+      document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
+  },
+  computed: {
+    ...mapGetters(['getUser'])
   }
 }
 </script>
@@ -49,6 +74,29 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.head {
+  background: #19202C;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__auth {
+    a {
+      color: #ffffff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      font-weight: 900;
+    }
+
+    img {
+      margin-left: 10px;
+    }
+  }
 }
 
 .vs-card__interactions {
@@ -62,8 +110,11 @@ export default {
   color: #2c3e50;
   max-width: 500px;
   margin: 0 auto;
-  padding: 0 30px;
   position: relative;
+
+  > div:nth-child(2) {
+    padding: 0 30px;
+  }
 }
 
 #nav {
