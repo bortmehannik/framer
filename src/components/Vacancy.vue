@@ -1,29 +1,32 @@
 <template>
   <div class="card" :class="{'active': isFlip}">
+    <slot />
     <div class="flipper">
       <div class="front">
-      <h3>{{ vacancy.title }}</h3>
-      <span class="subtitle">Оплачиваемая стажировка</span>
-      <img :src="vacancy.image" alt="">
-      <div class="info">
-          <p class="info__profession">{{ vacancy.profession }}</p>
-          <p class="info__employment">{{ vacancy.employment }}</p>
+        <div class="front__first-group">
+          <h3>{{ vacancy.title }}</h3>
+          <span class="subtitle">Оплачиваемая стажировка</span>
+          <img :src="vacancy.image" alt="">
+          <div class="info">
+              <p class="info__profession">{{ vacancy.profession }}</p>
+              <p class="info__employment">{{ vacancy.employment }}</p>
+          </div>
+          <div class="card-group">
+            <ul class="skill-list">
+              <li v-for="(skill, i) in vacancy.skills" :key="i">
+                #{{ skill }}
+              </li>
+            </ul>
+          </div>
         </div>
-      <div class="card-group">
-        <ul class="skill-list">
-          <li v-for="(skill, i) in vacancy.skills" :key="i">
-            #{{ skill }}
-          </li>
-        </ul>
-      </div>
-      <vs-button
-        gradient
-        :active="active"
-        @click="apply"
-        block
-      >
-        Подать заявку
-      </vs-button>
+        <vs-button
+          gradient
+          :active="active"
+          @click="apply"
+          block
+        >
+          Подать заявку
+        </vs-button>
     </div>
     <div class="back">
       <div class="vacancy-detail__description">
@@ -77,8 +80,13 @@ export default {
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  height: 400px;
-  pointer-events: none;
+  height: 80%;
+  min-width: 100%;
+  transition: 0.3s;
+
+  // &:not(.active) {
+  //   pointer-events: none;
+  // }
 
   &.active .flipper {
     -webkit-transform: rotateY(180deg);
@@ -97,10 +105,14 @@ export default {
   -moz-transition: .3s linear;
   -o-transition: .3s linear;
   transition: .3s linear;
+  height: 100%;
 
   img {
     width: 100%;
-    max-height: 190px;
+    height: 35vh;
+    object-fit: contain;
+    background-color: #ffffff;
+    padding: 0 20px;
   }
 
   .front, .back {
@@ -121,9 +133,27 @@ export default {
     -moz-transform: rotateY(0deg);
     -ms-transform: rotateY(0deg);
     transform: rotateY(0deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #ededed;
+    padding: 20px;
+    border-radius: 20px;
+
+    h3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2; // количество строк
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
 
     > *:not(button) {
       pointer-events: none;
+    }
+
+    .vs-button {
+      margin-left: 0;
+      margin-right: 0;
     }
   }
 
@@ -132,7 +162,7 @@ export default {
     -moz-transform: rotateY(-180deg);
     -ms-transform: rotateY(-180deg);
     transform: rotateY(-180deg);
-    height: 380px;
+    height: 100%;
     overflow: scroll;
     background: #ededed;
     border-radius: 10px;
@@ -171,5 +201,7 @@ export default {
   color: #9d35f9;
   font-weight: bold;
   font-size: 12px;
+  margin-bottom: 20px;
+  display: block;
 }
 </style>

@@ -113,7 +113,7 @@ export default {
   position: relative;
 
   > div:nth-child(2) {
-    padding: 0 30px;
+    padding: 0 10px;
   }
 }
 

@@ -30,25 +30,27 @@
         <ExperienceDescription @close="activeExperienceDescription = false" @notify="showNotify" />
       </div>
     </vs-dialog>
-    <!-- v-hammer:swipe.left="skipVacancy" -->
-    <!-- <div
-      v-touch:swipe.left="showDetail"
-      v-touch:swipe.right="skipVacancy"
-      v-touch:tap="apply"
-    > -->
+
+    <div class="home__counter">
+      <span>{{ allVacancies.length - (allVacancies.length - index) }} / {{ allVacancies.length }}</span>
+    </div>
+
     <div
       v-hammer:swipe="event => showDetail(event)"
+      v-hammer:tap="flip"
+      class="home__parent"
     >
       <Vacancy
-        v-if="vacancy && !isDetail"
+        v-for="(vacancy, index) in allVacancies"
         :key="index"
         :vacancy="vacancy"
         :is-flip="isFlip"
-        @apply="showDetail"
-      />
-      <ResponseManager v-else-if="vacancy && isDetail" />
-      <!-- <VacancyDetail :vacancy="vacancy" v-else-if="vacancy && isDetail" /> -->
-
+        @apply="openTab"
+        :style="{
+          transform: `translateX(-${vacancyPosition}%)`
+        }"
+      >
+      </Vacancy>
 
     </div>
     <!-- <VueSlickCarousel centerMode v-if="!$store.state.isLoading" @afterChange="changeSlider">
@@ -65,7 +67,7 @@
 // @ is an alias to /src
 import Vacancy from '@/components/Vacancy';
 // import VacancyDetail from '@/components/VacancyDetail';
-import ResponseManager from '@/components/ResponseManager';
+// import ResponseManager from '@/components/ResponseManager';
 // import VueSlickCarousel from 'vue-slick-carousel';
 
 import Education from '@/components/Education/index';
@@ -87,9 +89,10 @@ export default {
     activeExperience: false,
     activeExperienceActivity: false,
     activeExperienceDescription: false,
-    index: 0,
+    index: 1,
     isDetail: false,
     isFlip: false,
+    transform: 0
   }),
   components: {
     Vacancy,
@@ -101,37 +104,44 @@ export default {
     ExperienceActivity,
     ExperienceDescription,
     // VacancyDetail,
-    ResponseManager,
+    // ResponseManager,
   },
   created () {
     this.getVacanciesFromDB();
   },
-  mounted() {
-    console.log(this.vacancy);
-  },
   methods: {
     ...mapActions(['getVacanciesFromDB']),
+    openTab() {
+      window.open(this.allVacancies[this.allVacancies.length - this.index].link);
+      this.isFlip = false;
+    },
+    flip() {
+      this.isFlip = !this.isFlip;
+    },
     showDetail(event) {
-      if (event.deltaX > 0) {
-        console.log('Свайп вправо');
-      } else {
-        this.openInNewTab(this.vacancy.link);
-      }
       console.log(event);
+
+      if (event.deltaX > 0) {
+        this.skipVacancy();
+      } else {
+          // setTimeout(() => {
+          //   document.getElementById(`link_${this.index}`).click();
+          // }, 3000);
+          // window.open(this.allVacancies[this.allVacancies.length - this.index].link);
+      }
       // this.openInNewTab(this.vacancy.link);
       // this.isDetail = true;
-    },
-    openInNewTab(href) {
-      Object.assign(document.createElement('a'), {
-        target: '',
-        rel: 'noopener noreferrer',
-        href: href,
-      }).click();
     },
     skipVacancy() {
       this.isDetail = false;
       this.isFlip = false;
-      this.index++;
+
+      if (this.allVacancies.length === this.index) {
+        alert('Вакансии закончились');
+        this.index = 1
+      } else {
+        this.index++;
+      }
     },
     apply() {
       this.isFlip = !this.isFlip;
@@ -189,6 +199,9 @@ export default {
     ...mapGetters(['allVacancies', 'getUser']),
     vacancy() {
       return this.allVacancies[this.index];
+    },
+    vacancyPosition() {
+      return (this.allVacancies.length - this.index) * 100;
     }
   }
 }
@@ -197,6 +210,24 @@ export default {
 <style lang="scss" scoped>
   .home {
     position: relative;
+    height: calc(100vh - 115px);
+
+    &__parent {
+      height: 100%;
+      display: flex;
+      overflow: hidden;
+      align-items: center;
+    }
+
+    &__counter {
+      position: absolute;
+      top: 5%;
+      width: 100%;
+      left: 0;
+      padding: 0 10px;
+      text-align: right;
+      font-weight: bold;
+    }
   }
 
   .vs-dialog-content {
