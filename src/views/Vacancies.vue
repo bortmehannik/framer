@@ -213,6 +213,9 @@ export default {
     },
     flip() {
       this.isFlip = !this.isFlip;
+      if (this.isFlip) {
+        window.ym(89382981, 'reachGoal', 'flipCard')
+      }
     },
     skipVacancy() {
       this.isDetail = false;
