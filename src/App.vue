@@ -1,39 +1,45 @@
 <template>
   <div id="app">
-    <div class="head">
-      <div class="head__logo">
-        <router-link to="/">
-          <img src="https://changellenge.com/local/templates/main/assets/wl/img/logo-ico.svg" alt="CL">
-        </router-link>
+    <div v-if="isMobile">
+      <div class="head">
+        <div class="head__logo">
+          <router-link to="/">
+            <img src="https://changellenge.com/local/templates/main/assets/wl/img/logo-ico.svg" alt="CL">
+          </router-link>
+        </div>
+        <div class="head__auth">
+          <router-link to="/auth" v-if="!getUser">
+            Войти
+            <img src="https://changellenge.com/local/templates/main/assets/wl/img/ico-enter.svg" alt="">
+          </router-link>
+          <button @click="logout" v-else>
+            Выйти
+          </button>
+        </div>
       </div>
-      <div class="head__auth">
-        <router-link to="/auth" v-if="!getUser">
-          Войти
-          <img src="https://changellenge.com/local/templates/main/assets/wl/img/ico-enter.svg" alt="">
+      <router-view/>
+      <div id="nav">
+        <router-link to="/">
+          <span class="material-icons">feed</span>
+          Лента
         </router-link>
-        <button @click="logout" v-else>
-          Выйти
-        </button>
+        <router-link to="/summary">
+          <span class="material-icons">3p</span>
+          Резюме
+        </router-link>
+        <router-link to="/responses">
+          <span class="material-icons">email</span>
+          Отклики
+        </router-link>
+        <router-link to="/settings">
+          <span class="material-icons">settings</span>
+          Настройки
+        </router-link>
       </div>
     </div>
-    <router-view/>
-    <div id="nav">
-      <router-link to="/">
-        <span class="material-icons">feed</span>
-        Лента
-      </router-link>
-      <router-link to="/summary">
-        <span class="material-icons">3p</span>
-        Резюме
-      </router-link>
-      <router-link to="/responses">
-        <span class="material-icons">email</span>
-        Отклики
-      </router-link>
-      <router-link to="/settings">
-        <span class="material-icons">settings</span>
-        Настройки
-      </router-link>
+    <div class="no-mobile" v-else>
+      <p>Данный сервис доступен только с телефона.</p>
+      <img src="http://qrcoder.ru/code/?http%3A%2F%2Fi-tishkov.ru&10&0" width="330" height="330" border="0" title="QR код">
     </div>
   </div>
 </template>
@@ -42,12 +48,20 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
+  data: () => ({
+    isMobile: true,
+  }),
   mounted() {
     if(this.getCookie('user')) {
       this.getUserById(this.getCookie('user'));
     } else {
       console.log('нет куки');
     }
+
+    // if (window.innerWidth > 500) {
+    //   this.isMobile = false;
+    // }
+
   },
   methods: {
     ...mapActions(['getUserById']),
@@ -74,6 +88,14 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.no-mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  justify-content: center;
 }
 
 .head {
@@ -103,6 +125,10 @@ export default {
   width: 100%;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -112,9 +138,9 @@ export default {
   margin: 0 auto;
   position: relative;
 
-  > div:nth-child(2) {
-    padding: 0 10px;
-  }
+  // > div:nth-child(2) {
+  //   padding: 0 10px;
+  // }
 }
 
 #nav {
@@ -165,11 +191,11 @@ export default {
 }
 
 .slick-slide {
-  padding: 0 15px 0 0;
-}
+  padding: 0 15px 0 15px;
 
-.slick-track {
-  margin-left: -50px !important;
+  img {
+    width: 100%;
+  }
 }
 
 .vs-input-parent .vs-input-content > input {
@@ -186,5 +212,16 @@ export default {
 
 #app .vs-dialog__content.notFooter {
   margin-bottom: 10px;
+}
+
+#nav {
+  display: none;
+}
+
+.home .slick-dots li button:before {
+    width: 8px;
+    height: 8px;
+    background: #C06C84;
+    content: '';
 }
 </style>

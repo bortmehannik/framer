@@ -1,11 +1,11 @@
 <template>
-  <div class="card" :class="{'active': isFlip}">
+  <div class="card" @click="$emit('flip')" :class="{'active': isFlip}">
     <slot />
     <div class="flipper">
       <div class="front">
         <div class="front__first-group">
           <h3>{{ vacancy.title }}</h3>
-          <span class="subtitle">Оплачиваемая стажировка</span>
+          <span class="subtitle">{{ vacancy.type }}</span>
           <img :src="vacancy.image" alt="">
           <div class="info">
               <p class="info__profession">{{ vacancy.profession }}</p>
@@ -19,14 +19,12 @@
             </ul>
           </div>
         </div>
-        <vs-button
-          gradient
-          :active="active"
-          @click="apply"
-          block
-        >
-          Подать заявку
-        </vs-button>
+        <div class="front__second-group">
+          <div class="card-other">
+            <p><b>Тип отклика:</b> <br> {{ responseTypeList[vacancy.responseType - 1] }}</p>
+            <p><b>Длительность отбора:</b> <br> {{ responseDelayList[vacancy.responseDelay - 1] }}</p>
+          </div>
+        </div>
     </div>
     <div class="back">
       <div class="vacancy-detail__description">
@@ -41,6 +39,14 @@
             <p class="vacancy-detail__subtitle">Условия:</p>
 
             <div class="back__list" v-html="vacancy.terms"></div>
+
+            <vs-button
+              gradient
+              block
+              @click.stop="openVacancy"
+            >
+              Подать заявку
+            </vs-button>
         </div>
       </div>
     </div>
@@ -53,15 +59,17 @@ export default {
   name: 'Vacancy',
   data: () => ({
     active: false,
+    responseTypeList: ['Через сайт работодателя', 'Через платформу'],
+    responseDelayList: ['Быстрый', 'Средний', 'Долгий'],
   }),
   props: ['vacancy', 'isFlip'],
-  emits: ['apply'],
+  emits: ['flip'],
   mounted() {
     console.log(this.vacancy);
   },
   methods: {
-    apply() {
-      this.$emit('apply');
+    openVacancy() {
+      window.open(this.vacancy.link);
     }
   }
 }
@@ -73,6 +81,27 @@ export default {
   font-weight: bold;
 }
 
+.card:not(.active) .flipper .back {
+    overflow: hidden;
+}
+
+.vacancy-detail__description {
+  background: #ededed;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.card-other {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+
+  p {
+    padding: 0 5px;
+  }
+}
+
 .card {
   -webkit-perspective: 1200;
   perspective: 1200;
@@ -80,9 +109,11 @@ export default {
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  height: 80%;
-  min-width: 100%;
-  transition: 0.3s;
+  height: 95%;
+  max-width: 90%;
+  // transition: 0.3s;
+  margin: 0 auto;
+  overflow: scroll;
 
   // &:not(.active) {
   //   pointer-events: none;
@@ -117,7 +148,7 @@ export default {
 
   .front, .back {
     box-sizing: border-box;
-    position: absolute;
+    // position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -163,10 +194,9 @@ export default {
     -ms-transform: rotateY(-180deg);
     transform: rotateY(-180deg);
     height: 100%;
-    overflow: scroll;
     background: #ededed;
     border-radius: 10px;
-    padding: 10px;
+    position: absolute;
 
     &__list {
       padding-left: 30px;
@@ -188,6 +218,13 @@ export default {
   font-size: 13px;
   justify-content: space-between;
   width: 100%;
+
+  &--top {
+    position: absolute;
+    width: calc(100% - 40px);
+    margin-top: 10px;
+    padding: 0 10px;
+  }
 
   > p {
     background: rgba(0, 0, 0, 0.6);
