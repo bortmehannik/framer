@@ -2,22 +2,23 @@
   <div class="home" v-if="isEducation">
     <VueSlickCarousel v-bind="settingsStart" @afterChange="handleSwipe" ref="carousel">
       <div class="slick-group">
-        <img src="../../public/img/left-swipe.png" alt="">
-        <h2>Свайп влево</h2>
-        <p>Если вакансия тебе не понравилась</p>
+        <img src="../../public/img/left-swipe.jpeg" alt="">
       </div>
       <div class="slick-group">
-        <img src="../../public/img/right-swipe.png" alt="">
-        <h2>Свайп вправо</h2>
-        <p>Если вакансия тебе понравилась и ты хочешь на нее откликнуться</p>
+        <img src="../../public/img/right-swipe.jpeg" alt="">
       </div>
       <div class="slick-group">
-        <img src="../../public/img/center-swipe.png" alt="">
-        <h2>Клик по карточке</h2>
-        <p>Кликай в любое место на карточке, чтобы увидеть полное описание</p>
+        <img src="../../public/img/center-swipe.jpeg" alt="">
       </div>
     </VueSlickCarousel>
-    <button class="next-slick" @click="nextSlide">{{ indexStartSlick === 2 ? 'Начать' : 'Дальше' }}</button>
+    <div class="home__next-block">
+      <button class="next-slick" @click="nextSlide">
+        {{ indexStartSlick === 2 ? 'Начать' : 'Дальше' }}
+        <svg v-if="indexStartSlick !== 2" width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 7.99825C21.0006 7.71869 20.8856 7.53119 20.773 7.4235L13.5043 0.22338C13.1843 -0.086884 12.653 -0.0656701 12.3556 0.235657C12.0581 0.536983 12.0643 1.07882 12.3685 1.37346L18.249 7.19861H0.80789C0.361687 7.19861 0 7.55686 0 7.99882C0 8.44078 0.361687 8.79903 0.80789 8.79903H18.249L12.3685 14.6242C12.0643 14.9188 12.0581 15.4607 12.3556 15.762C12.653 16.0633 13.1719 16.0907 13.5043 15.7743L20.773 8.57414C20.9713 8.38441 20.9904 8.2622 21 7.99938V7.99825Z" fill="white"/>
+        </svg>
+      </button>
+    </div>
   </div>
   <div class="home" v-else>
     <vs-dialog scroll overflow-hidden not-close auto-width v-model="activeEducation">
@@ -62,9 +63,6 @@
     </vs-dialog>
 
     <div class="home__counter">
-      <button v-if="isFlip" @click="flip">
-        <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M2.117 12l7.527 6.235-.644.765-9-7.521 9-7.479.645.764-7.529 6.236h21.884v1h-21.883z"/></svg>
-      </button>
       <span>{{ allVacancies.length - (allVacancies.length - index) }} / {{ allVacancies.length }}</span>
     </div>
 
@@ -81,17 +79,19 @@
           :key="index"
           :vacancy="vacancy"
           @flip="flip"
+          @skip="skipClick"
+          @like="likeClick"
           :is-flip="isFlip"
         />
     </draggable>
-    <draggable class="home__empty-list" :class="{'active': isLights}" :list="skipVacancies" group="vacancies">
-      <div class="bg">
+    <draggable id="left" class="home__empty-list" :class="{'active': isLights}" :list="skipVacancies" group="vacancies">
+      <div class="bg bg-active">
         <div class="bg--red"></div>
       </div>
     </draggable>
 
-    <draggable class="home__empty-list home__empty-list--right" :class="{'active': isLights}" :list="successVacancies" group="vacancies">
-      <div class="bg">
+    <draggable id="right" class="home__empty-list home__empty-list--right" :class="{'active': isLights}" :list="successVacancies" group="vacancies">
+      <div class="bg bg-active">
         <div class="bg--green"></div>
       </div>
     </draggable>
@@ -138,6 +138,8 @@ export default {
     isEducation: false,
     transform: 0,
     isLights: false,
+    isLightsLeft: false,
+    isLightsRight: false,
     indexStartSlick: 0,
     settingsStart: {
       "dots": true,
@@ -169,9 +171,42 @@ export default {
     if(!this.getCookie('education')) {
       this.isEducation = true;
     }
+
+    var targetLeft = document.getElementById('left');
+    var targetRight = document.getElementById('right');
+
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.target.classList.contains('home__empty-list--right')) {
+            const rightBG = mutation.target.querySelector('.bg');
+
+            if (rightBG.classList.contains('bg-active')) {
+              rightBG.classList.remove('bg-active');
+            } else {
+              rightBG.classList.add('bg-active');
+            }
+          } else {
+            const leftBG = mutation.target.querySelector('.bg');
+
+            if (leftBG.classList.contains('bg-active')) {
+              leftBG.classList.remove('bg-active');
+            } else {
+              leftBG.classList.add('bg-active');
+            }
+          }
+        });
+    });
+
+    // configuration of the observer:
+    var config = { attributes: true, childList: true, characterData: true }
+
+    // pass in the target node, as well as the observer options
+    observer.observe(targetLeft, config);
+    observer.observe(targetRight, config);
   },
   watch: {
     successVacancies() {
+      window.ym(89382981,'reachGoal','swipeRight');
       if (this.allVacancies.length - 1 === this.index) {
         this.activeAddToLink = true;
         this.index = 1
@@ -181,6 +216,7 @@ export default {
       }
     },
     skipVacancies() {
+      window.ym(89382981,'reachGoal','swipeLeft');
       if (this.allVacancies.length - 1 === this.index) {
         this.activeBackCall = true;
         this.index = 1;
@@ -191,10 +227,34 @@ export default {
   },
   methods: {
     ...mapActions(['getVacanciesFromDB']),
+    test() {
+      console.log('хуй');
+    },
     getCookie(name) {
       var value = "; " + document.cookie;
       var parts = value.split("; " + name + "=");
       if (parts.length == 2) return parts.pop().split(";").shift();
+    },
+    skipClick() {
+      window.ym(89382981,'reachGoal','skipVacancy');
+      this.isFlip = false;
+
+      if (this.allVacancies.length - 1 === this.index) {
+        this.activeBackCall = true;
+        this.index = 1;
+      } else {
+        this.index++;
+      }
+    },
+    likeClick() {
+      window.ym(89382981,'reachGoal','likeVacancy');
+      if (this.allVacancies.length - 1 === this.index) {
+        this.activeAddToLink = true;
+        this.index = 1
+      } else {
+        this.activeAddToLink = true;
+        this.index++;
+      }
     },
     nextSlide() {
       if (this.indexStartSlick === 2) {
@@ -298,7 +358,6 @@ export default {
 <style lang="scss" scoped>
   .slick-group {
     text-align: center;
-    padding-bottom: 25px;
 
     p {
       color: #A6A6A6;
@@ -312,17 +371,18 @@ export default {
   }
 
   .next-slick {
-    background: #FE697D;
-    border-radius: 12px;
     border: none;
     color: #ffffff;
-    display: block;
-    margin-top: 40px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 10px 20px;
     font-weight: bold;
     font-size: 25px;
+    background: transparent;
+    font-size: 22px;
+    display: inline-flex;
+    align-items: center;
+
+    svg {
+      margin-left: 15px;
+    }
   }
 
   .home {
@@ -330,17 +390,27 @@ export default {
     height: calc(90vh - 62px);
     overflow-x: hidden;
 
+    &__next-block {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      text-align: right;
+    }
+
     &__list-group {
       height: 100%;
       padding-top: 30px;
+      padding-bottom: 23px;
     }
 
     &__empty-list {
       position: absolute;
       top: 0;
       height: 100%;
-      padding-top: 30px;
-      padding-bottom: 60px;
+      padding-top: 0;
+      padding-bottom: 0;
       width: 35%;
       display: none;
 
@@ -353,21 +423,18 @@ export default {
         width: 100%;
         height: 100%;
 
-        &--green {
-          width: 40px;
-          height: 100%;
-          margin-left: auto;
-          background: #01ef01;
-          filter: blur(7px);
-          opacity: 0.5;
-        }
+        &-active {
+          .bg--green {
+            height: 100%;
+            margin-left: auto;
+            background: linear-gradient(90deg, rgba(15, 158, 13, 0.6) 0%, rgba(15, 158, 13, 0) 100%);
+            transform: rotate(180deg);
+          }
 
-        &--red {
-          width: 40px;
-          height: 100%;
-          background: rgb(255, 48, 48);
-          filter: blur(7px);
-          opacity: 0.5;
+          .bg--red {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(189, 12, 30, 0.6) 0%, rgba(189, 12, 30, 0) 100%);
+          }
         }
       }
 
@@ -389,11 +456,11 @@ export default {
 
     &__counter {
       position: absolute;
-      top: 0;
+      top: 13px;
+      font-size: 12px;
       width: 100%;
       left: 0;
-      padding: 0 10px;
-      text-align: right;
+      padding: 0 20px;
       font-weight: bold;
       display: flex;
       justify-content: space-between;

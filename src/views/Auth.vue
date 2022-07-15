@@ -27,6 +27,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+    .auth {
+        background: #ffffff;
+        padding: 0 30px;
+    }
+
     .switch {
         width: 60%;
         margin: 0 auto;

@@ -1,12 +1,10 @@
 <template>
     <div class="call-card">
-        <h2>На этом все!</h2>
-        <p>Если хотите заново посмотреть все вакансии, то обновите страницу, а еще вы можете оставить нам обратную связь</p>
+        <h2>Похоже, вы пролистали все вакансии.</h2>
+        <p>Нажмите на кнопку, чтобы вернуться и посмотреть их заново!</p>
         <div class="call-card__group">
-            <vs-button @click="$emit('close')">
-                Обновить страницу
-            </vs-button>
-            <a href="#" target="_blank">Оставить ОС</a>
+            <a href="https://changellenge.typeform.com/to/ImsHw8wY" class="blue" target="_blank">Оставить обратную связь</a>
+            <a href="#" @click="$emit('close')">Вернуться к вакансиям</a>
         </div>
     </div>
 </template>
@@ -25,6 +23,11 @@
             text-decoration: none;
             color: black;
             border-radius: 12px;
+
+            &.blue {
+                background: #185bff;
+                color: #ffffff;
+            }
         }
 
         &__group {

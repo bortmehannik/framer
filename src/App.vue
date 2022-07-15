@@ -7,7 +7,7 @@
             <img src="https://changellenge.com/local/templates/main/assets/wl/img/logo-ico.svg" alt="CL">
           </router-link>
         </div>
-        <div class="head__auth">
+        <div class="head__auth" v-if="0">
           <router-link to="/auth" v-if="!getUser">
             Войти
             <img src="https://changellenge.com/local/templates/main/assets/wl/img/ico-enter.svg" alt="">
@@ -90,6 +90,10 @@ export default {
   box-sizing: border-box;
 }
 
+#app {
+  background: #F2F2F2;
+}
+
 .no-mobile {
   display: flex;
   flex-direction: column;
@@ -100,7 +104,6 @@ export default {
 
 .head {
   background: #19202C;
-  margin-bottom: 20px;
   padding: 10px 20px;
   display: flex;
   align-items: center;
@@ -182,6 +185,11 @@ body {
 
 .slick-list {
   max-width: 100%;
+  height: 100%;
+}
+
+.slick-track {
+  height: 100%;
 }
 
 .vs-card {
@@ -191,11 +199,40 @@ body {
 }
 
 .slick-slide {
-  padding: 0 15px 0 15px;
+  padding: 0;
+
+  * {
+    height: 100%;
+  }
 
   img {
     width: 100%;
+    object-fit: cover;
   }
+}
+
+.home .slick-dots {
+  text-align: left;
+  bottom: 0;
+  z-index: 2;
+  height: 66px;
+  display: inline-flex !important;
+  align-items: center;
+  width: auto;
+  padding-left: 20px;
+
+  li {
+    button {
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+.slick-slider {
+  height: 100%;
 }
 
 .vs-input-parent .vs-input-content > input {
@@ -219,9 +256,11 @@ body {
 }
 
 .home .slick-dots li button:before {
-    width: 8px;
-    height: 8px;
-    background: #C06C84;
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background: #ffffff;
     content: '';
+    position: inherit;
 }
 </style>

@@ -4,10 +4,8 @@
         <p class="to-link__text"><b>{{ vacancy.title }}</b></p>
         <p class="to-link__text">Хотите перейти на сайт работодателя? </p>
         <div class="to-link__group">
-            <vs-button @click="$emit('close')">
-                Отменить
-            </vs-button>
-            <a :href="vacancy.link" target="_blank">Перейти</a>
+            <a :href="vacancy.link" @click="sendTarget" class="blue" target="_blank">Оставить заявку</a>
+            <a href="#" @click.prevent="$emit('close')">Отмена</a>
         </div>
     </div>
 </template>
@@ -16,6 +14,11 @@
 export default {
     props: ['vacancy'],
     emits: ['close'],
+    methods: {
+        sendTarget() {
+            window.ym(89382981,'reachGoal','goToLink');
+        }
+    }
 }
 </script>
 
@@ -33,6 +36,11 @@ export default {
             text-decoration: none;
             color: black;
             border-radius: 12px;
+
+            &.blue {
+                background: #185bff;
+                color: #ffffff;
+            }
         }
 
         &__group {

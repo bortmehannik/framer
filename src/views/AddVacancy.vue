@@ -64,6 +64,9 @@
         <div class="content-inputs">
             <textarea class="big-input" v-model="terms" placeholder="Условия" />
         </div>
+        <div class="content-inputs">
+            <vs-input v-model="city" placeholder="Город (например Москва)" />
+        </div>
 
         <vs-button
             gradient
@@ -99,6 +102,7 @@ export default {
         responsibilities: '',
         requirements: '',
         terms: '',
+        city: '',
     }),
     created() {
       this.getVacanciesFromDB();
@@ -141,7 +145,8 @@ export default {
                 this.responseDelay,
                 this.responsibilities,
                 this.requirements,
-                this.terms
+                this.terms,
+                this.city
             )
 
             this.title = '';
@@ -160,10 +165,11 @@ export default {
             this.responsibilities = '';
             this.requirements = '';
             this.terms = '';
+            this.city = '';
 
             this.getVacanciesFromDB();
         },
-        writeUserData(id, title, image, profession, employment, type, skills, responseType, link, responseDelay, responsibilities, requirements, terms) {
+        writeUserData(id, title, image, profession, employment, type, skills, responseType, link, responseDelay, responsibilities, requirements, terms, city) {
             const db = getDatabase();
             set(ref(db, 'vacancies/' + id), {
                 title,
@@ -177,7 +183,8 @@ export default {
                 responseDelay,
                 responsibilities,
                 requirements,
-                terms
+                terms,
+                city
             });
         },
     },
