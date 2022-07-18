@@ -95,7 +95,7 @@ export default {
         skill_4: '',
         skills: [],
         responseType: '',
-        responseTypeList: ['Через сайт работодателя', 'Через платформу'],
+        responseTypeList: ['Через сайт работодателя', 'Через платформу', 'Напрямую HR'],
         link: '',
         responseDelay: '',
         responseDelayList: ['Быстрый', 'Средний', 'Долгий'],

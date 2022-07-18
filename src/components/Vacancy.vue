@@ -5,12 +5,14 @@
         <div class="front__first-group">
           <img :src="vacancy.image" alt="">
           <div class="info">
-            <p class="info__profession">{{ vacancy.profession }}</p>
             <p class="info__employment">{{ vacancy.employment }}</p>
+            <p class="info__city" v-if="vacancy.city">{{ vacancy.city }}</p>
+            <p class="info__profession">{{ vacancy.profession }}</p>
           </div>
           <h3>{{ vacancy.title }}</h3>
           <span class="subtitle">{{ vacancy.type }}</span>
           <div class="card-group">
+            <p class="card-group__title">Какие потребуются навыки:</p>
             <ul class="skill-list">
               <li v-for="(skill, i) in vacancy.skills" :key="i">
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,8 +22,8 @@
               </li>
             </ul>
           </div>
-          <p class="front__delay"><b>Длительность отбора:</b> {{ responseDelayList[vacancy.responseDelay - 1] }}</p>
-          <p class="front__type">Отклик <span>{{ responseTypeList[vacancy.responseType - 1] }}</span></p>
+          <p class="front__delay"><b>Сколько длится отбор:</b> {{ responseDelayList[vacancy.responseDelay - 1] }}</p>
+          <p class="front__type"><b>Как можно откликнуться:</b> <span>{{ responseTypeList[vacancy.responseType - 1] }}</span></p>
         </div>
         <div class="front__second-group">
           <button class="front__skip" @click.stop="$emit('skip')">
@@ -150,7 +152,7 @@ export default {
   name: 'Vacancy',
   data: () => ({
     active: false,
-    responseTypeList: ['Через сайт работодателя', 'Через платформу'],
+    responseTypeList: ['Через сайт работодателя', 'Через платформу', 'Напрямую HR'],
     responseDelayList: ['Быстрый', 'Средний', 'Долгий'],
   }),
   props: ['vacancy', 'isFlip'],
@@ -307,6 +309,7 @@ export default {
   overflow: scroll;
   background: #ffffff;
   border-radius: 20px;
+  font-family: 'GTWalsheimPro-Regular';
 
   // &:not(.active) {
   //   pointer-events: none;
@@ -333,7 +336,7 @@ export default {
 
   img {
     width: 100%;
-    height: 240px;
+    height: 210px;
     object-fit: contain;
     background-color: #19202C;
     padding: 0 20px;
@@ -381,23 +384,29 @@ export default {
 
     &__type {
       padding: 0 20px;
-      margin-top: 30px;
+      margin-top: 20px;
       font-size: 12px;
-      font-weight: 500;
 
       span {
-        text-transform: lowercase;
+        display: block;
+        margin-top: 5px;
+        color: #BD0C1E;
+      }
+
+      b {
+        font-weight: 900;
+        display: block;
       }
     }
 
     &__delay {
       padding: 0 20px;
-      margin-top: 30px;
+      margin-top: 20px;
       font-size: 12px;
       color: #BD0C1E;
 
       b {
-        font-weight: 500;
+        font-weight: 900;
         color: #19202C;
         display: block;
         margin-bottom: 5px;
@@ -405,11 +414,15 @@ export default {
     }
 
     h3 {
-      // display: -webkit-box;
-      // -webkit-line-clamp: 2;
-      // -webkit-box-orient: vertical;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
       overflow: hidden;
-      padding: 20px 20px 10px 20px;
+      padding: 20px 20px 0 20px;
+      font-family: GTWalsheimPro-Regular;
+      font-size: 22px;
+      line-height: 22px;
+      margin-bottom: 10px;
     }
 
     .subtitle {
@@ -417,19 +430,21 @@ export default {
       padding: 0 20px;
       font-weight: 400;
       color: #19202C;
-      margin-bottom: 10px;
+      margin-bottom: 30px;
     }
 
     .skill-list {
       display: flex;
-
-      li:not(:last-child) {
-        margin-right: 10px;
-      }
+      flex-flow: row wrap;
     }
 
     .card-group {
       padding: 0 20px;
+
+      &__title {
+        font-size: 12px;
+        font-weight: 900;
+      }
     }
 
     .vs-button {
@@ -459,7 +474,9 @@ export default {
       }
 
       ::v-deep ul {
-        padding-left: 20px;
+        padding-left: 17px;
+        font-size: 14px;
+        line-height: 14px;
       }
     }
   }
@@ -468,7 +485,7 @@ export default {
 .skill-list {
   list-style: none;
   padding: 0;
-  margin: 10px 0 0 0;
+  margin: 5px 0 0 0;
 
   li {
     display: flex;
@@ -476,9 +493,12 @@ export default {
     color: #BD0C1E;
     font-size: 12px;
     font-weight: 400;
+    width: 30%;
 
     svg {
       margin-right: 4px;
+      min-width: 8px;
+      min-height: 8px;
     }
   }
 }
@@ -488,7 +508,7 @@ export default {
   font-size: 12px;
   width: 100%;
   position: absolute;
-  top: 200px;
+  top: 172px;
   padding: 0 20px;
 
   &--top {
@@ -503,6 +523,7 @@ export default {
     padding: 3px 10px;
     border-radius: 50px;
     color: #19202C;
+    font-size: 12px;
 
     &:not(:last-child) {
       margin-right: 8px;

@@ -27,6 +27,7 @@
             &.blue {
                 background: #185bff;
                 color: #ffffff;
+                margin-bottom: 15px;
             }
         }
 
@@ -35,6 +36,7 @@
             display: flex;
             align-items: center;
             justify-content: space-around;
+            flex-direction: column;
         }
     }
 </style>

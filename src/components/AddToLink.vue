@@ -1,8 +1,8 @@
 <template>
     <div class="to-link">
-        <h3 class="to-link__title">Вам понравилась вакансия:</h3>
+        <h3 class="to-link__title">СОГЛАСОВАНО:</h3>
         <p class="to-link__text"><b>{{ vacancy.title }}</b></p>
-        <p class="to-link__text">Хотите перейти на сайт работодателя? </p>
+        <p class="to-link__text">Хотите перейти на сайт работодателя, чтобы оставить заявку? </p>
         <div class="to-link__group">
             <a :href="vacancy.link" @click="sendTarget" class="blue" target="_blank">Оставить заявку</a>
             <a href="#" @click.prevent="$emit('close')">Отмена</a>

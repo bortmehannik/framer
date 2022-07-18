@@ -1,3 +1,18 @@
+@font-face {
+    font-family: "GTWalsheimPro-Bold";
+    src: url("../../../public/fonts/GTWalsheimPro-Bold.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "GTWalsheimPro-Regular";
+    src: url("../../../public/fonts/GTWalsheimPro-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "GTWalsheimPro-Light";
+    src: url("../../../public/fonts/GTWalsheimPro-Light.ttf") format("truetype");
+}
+
 .education {
     &__row {
         display: flex;

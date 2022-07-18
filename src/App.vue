@@ -58,9 +58,9 @@ export default {
       console.log('нет куки');
     }
 
-    // if (window.innerWidth > 500) {
-    //   this.isMobile = false;
-    // }
+    if (window.innerWidth > 500) {
+      this.isMobile = false;
+    }
 
   },
   methods: {
@@ -207,7 +207,8 @@ body {
 
   img {
     width: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background-color: #5e626b;
   }
 }
 
