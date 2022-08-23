@@ -1,6 +1,15 @@
 <template>
   <div class="home" :class="{'home--onboarding': isEducation}" v-if="isEducation">
     <VueSlickCarousel v-bind="settingsStart" @afterChange="handleSwipe" ref="carousel">
+      <div class="slick-group slick-group--black">
+        <img src="../../public/img/left-swipe.jpeg" alt="">
+        <div class="slick-group__text">
+          <p>Привет! 👋</p>
+          <p>Это карьерный тиндер</p>
+          <p class="margin">Здесь мы собрали эксклюзивные предложения от топовых компаний, чтобы вы могли найти мэтч со своей первой работой</p>
+          <p class="margin">Коротко о том, как пользоваться платформой</p>
+        </div>
+      </div>
       <div class="slick-group slick-group--red">
         <img src="../../public/img/left-swipe.jpeg" alt="">
         <svg width="246" height="166" viewBox="0 0 246 166" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -393,6 +402,29 @@ export default {
       height: max-content;
     }
 
+    &__text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-family: 'GTWalsheimPro-Regular';
+      font-size: 22px;
+      line-height: 22px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: calc(100% - 66px);
+
+      p {
+        height: auto;
+        color: #ffffff !important;
+
+        &.margin {
+          margin-top: 45px;
+        }
+      }
+    }
+
     &:before {
         content: '';
         width: 100%;
@@ -410,6 +442,12 @@ export default {
 
       &:before {
         background: linear-gradient(90deg, rgba(189, 12, 30, 0.6) 0%, rgba(189, 12, 30, 0) 100%);
+      }
+    }
+
+    &--black {
+      &:before {
+        background: rgba(25, 32, 44, 0.8);
       }
     }
 

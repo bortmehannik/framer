@@ -19,11 +19,11 @@ const routes = [
     //   }
     // }
   },
-  {
-    path: '/add-vacancy',
-    name: 'AddVacancy',
-    component: () => import(/* webpackChunkName: "about" */ '../views/AddVacancy.vue')
-  },
+  // {
+  //   path: '/add-vacancy',
+  //   name: 'AddVacancy',
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/AddVacancy.vue')
+  // },
   {
     path: '/auth',
     name: 'Auth',
