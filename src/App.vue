@@ -39,7 +39,7 @@
     </div>
     <div class="no-mobile" v-else>
       <p>Данный сервис доступен только с телефона.</p>
-      <img src="http://qrcoder.ru/code/?https%3A%2F%2F3.changellenge.com&10&0" width="330" height="330" border="0" title="QR код">
+      <img src="../public/img/qr-code.png" width="330" height="330" border="0" title="QR код">
     </div>
   </div>
 </template>
